@@ -200,9 +200,10 @@ const TableOne = () => {
         try {
             updateContext.setTableLoading(true);
             //console.log(updateContext?.order)
+            console.log(randomPass)
             const response = await axios.post("/api/users/registerorders", { 
                 useremail: updateContext.order.useremail,
-                userpass: updateContext.order.userpass,
+                userpass: randomPass,
                 entitytype: '',
                 pkgtitle: updateContext.order.pkgtitle,
                 pkgprice: updateContext.order.pkgprice,

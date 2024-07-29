@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+//custom
 import { useAuthContext } from "../context/AuthContext";
+import { makeRequest } from "../api/makeRequest";
+
 import {jwtDecode} from "jwt-decode";
 
 const useCreate = () => {
   const navigate = useNavigate()
-  const localUser = localStorage.getItem('person')
-  if(!localUser || localUser === "") return navigate('/')
-  const userdecoded = jwtDecode(localUser)
-  const user = userdecoded?.objectToSend
+  //const localUser = localStorage.getItem('person') 
+  //if(!localUser || localUser === "") return navigate('/')
+  //const userdecoded = jwtDecode(localUser)
+  const user = "" //|| userdecoded?.objectToSend
  // const navigate = useNavigate();
   const auth = useAuthContext()
   const createUser = async ({ 
@@ -30,7 +33,7 @@ const useCreate = () => {
   }) => {
     try {
       auth.setLoading(true);
-      const response = await axios.post('/api/users/registerusers', { 
+      const response = await makeRequest.post('/api/users/registerusers', { 
         title,  
         email, 
         phone, 
@@ -47,12 +50,14 @@ const useCreate = () => {
         isVerifiedUser, 
         roleId
       })
+      console.log(response)
       if(!response) return auth.setErrMsg("The server is offline")
-      if(response.status === 409) return auth.setErrMsg(`${response.data.message}`)
+      if(response.status === 409) return auth.setErrMsg(`${response?.data?.message}`)
       auth.setMsg(`${response.data.message}`)
       return response
     } catch (err) {
-      auth.setErrMsg(err.response.data.message);
+      //console.log(err)
+      auth.setErrMsg(err?.message);
     } finally {
       auth.setLoading(false);
     }

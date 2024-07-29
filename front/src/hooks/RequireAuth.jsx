@@ -17,7 +17,7 @@ const RequireAuth = ({ allowedRoles }) => {
             return auth.setUser(res?.data?.user)
         }else{
             auth.setMsg("You are not logged in")
-            return navigate('/')
+            return navigate('/auth')
         }
     }).catch(err => {
         auth.setMsg("There was an error in authentication", err)

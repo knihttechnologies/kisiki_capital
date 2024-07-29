@@ -101,39 +101,72 @@ export const AuthProvider = ({ children }) => {
     const loginAction = async (userEmail, userPass) => {
         try {
             setLoading(true);
-           await axios.get("/api/auth/authenticate").then(res => {
+           const alreadyAutheniticated = await makeRequest.get("/api/auth/authenticate")
+            // .then(res => {
+            //     const role = res?.data?.user?.user_role?.role_name
+            //     if(res?.data?.valid){
+            //         setUser(res?.data?.user)
+            //         if(role == "User") return navigate("/dashboard");
+            //         if(role == "Superadmin") return navigate("/admindash")
+            //     }else{
+            //         setAuthMsg("Not authorized")
+            //         return navigate('/')
+            //     }
+            // }).catch(err => {
+            //     setAuthErrMsg("There was an error in authentication", err)
+            // })
+            if (alreadyAutheniticated?.data?.valid === true){
                 const role = res?.data?.user?.user_role?.role_name
-                if(res?.data?.valid){
-                    auth.setUser(res?.data?.user)
+                role == "User" 
+                    ? navigate("/dashboard") 
+                    : role == "Superadmin" 
+                        ? navigate("/admindash")
+                        : setAuthErrMsg("Not authorized") && navigate('/auth')
+            }else{
+                const response = await axios.post("/api/auth/login", { userEmail, userPass })
+                if(!response) return setAuthErrMsg("")
+                console.log(response)
+                if (response.status === 201) {
+                    const userData = jwtDecode(response?.data?.accessToken)
+                    const role = userData.userSession?.user_role?.role_name
+                    // console.log(userData?.userSession)
+                    // setUser(userData?.userSession);
+                    // setToken(response?.data?.accessToken);
+                    localStorage.setItem("person", JSON.stringify(response?.data?.accessToken));
+                    setMsg(`Welcome`)
+                    //navigate('/')
                     if(role == "User") return navigate("/dashboard");
                     if(role == "Superadmin") return navigate("/admindash")
-                }else{
-                    setAuthMsg("Not authorized")
-                    return navigate('/')
-                }
-            }).catch(err => {
-                setAuthErrMsg("There was an error in authentication", err)
-            })
-            const response = await axios.post("/api/auth/login", { userEmail, userPass })
-            if(!response) return setErrMsg("Something went wrong in the try block")
-            console.log(response)
-            if (response.status === 201) {
-                const userData = jwtDecode(response?.data?.accessToken)
-                const role = userData.userSession?.user_role?.role_name
-                // console.log(userData?.userSession)
-                // setUser(userData?.userSession);
-                // setToken(response?.data?.accessToken);
-                setMsg(`Welcome`)
-                navigate('/checkout')
-                //localStorage.setItem("person", JSON.stringify(response?.data?.accessToken));
-                // if(role == "User") return navigate("/dashboard");
-                // if(role == "Superadmin") return navigate("/admindash")
-                // if(role !== "Superadmin" || role !== "User") return setErrMsg("you are not a registered user");
-            }else if (response.status === 400) return setErrMsg("Bad request")
-            else return
+                    if(role !== "Superadmin" || role !== "User") return setErrMsg("you are not a registered user");
+                }else if (response.status === 400) return setAuthErrMsg("Bad request")
+                else return
+            }
         } catch (err) {
-            //console.log(err)
-            setErrMsg(err.response.data.message)
+            console.log(err)
+            if(err?.response?.data?.valid == false){
+                try {
+                    const response = await makeRequest.post("/api/auth/login", { userEmail, userPass })
+                    if(!response) return setAuthErrMsg("")
+                    console.log(response)
+                    if (response.status === 201) {
+                        const userData = jwtDecode(response?.data?.accessToken)
+                        const role = userData.userSession?.user_role?.role_name
+                        // console.log(userData?.userSession)
+                        // setUser(userData?.userSession);
+                        // setToken(response?.data?.accessToken);
+                        localStorage.setItem("person", JSON.stringify(response?.data?.accessToken));
+                        setMsg(`Welcome`)
+                        //navigate('/')
+                        if(role == "User") return navigate("/dashboard");
+                        if(role == "Superadmin") return navigate("/admindash")
+                        if(role !== "Superadmin" || role !== "User") return setAuthErrMsg("you are not a registered user");
+                    }
+                } catch (error) {
+                    console.log(error)
+                    if (error?.response?.status === 400) return setAuthErrMsg(error?.response?.data?.message)
+                }
+            }
+            //setErrMsg(err?.message)
         }finally {
             // we finally end the loading session
             return setLoading(false);

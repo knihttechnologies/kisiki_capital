@@ -122,115 +122,115 @@ const CheckOut = () => {
         <div className="mt-30 p-4 sm:w-full bg-white opacity-[85%] rounded-lg dark:border-strokedark dark:bg-boxdark">  
             {auth.openSignUp &&
                 <div>
-                    {auth.loading ? <Loader/> : (
-                        <form onSubmit={handleSubmit} className="flex justify-center shadow-xl rounded-md ">
-                            
-                                <div className="flex flex-col lg:w-[800px] flex-wrap mt-5 p-4">
-                                    {auth?.authMsg &&
-                                        <p className={"bg-red-600 text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >
-                                            {auth?.authMsg}
-                                        </p>
-                                    }
-                                    <h1 className="text-black/100 dark:text-white font-bold text-center text-xl shadow-xl p-4 mt-20 mb-5">
-                                        Complete <span className="bg-warning p-2 text-white rounded-lg shadow-xl">Registration</span> 
-                                    </h1>
-                                    {/* <h1 className="text-black/100 dark:text-white font-bold text-center text-lg shadow-xl p-4 mt-10 mb-5">
-                                        Register now and get started with your trading journey
-                                    </h1> */}
-                                    {/* <p> Already have an account 
-                                        <button className="text-warning dark:text-white p-2 ml-2 shadow-lg rounded-lg" onClick={() => {
-                                            auth.setOpenSignIn(true)
-                                            auth.setOpenSignUp(false)
-                                        }}>
-                                            Login here
-                                        </button> 
-                                    </p> */}
-                                    {auth?.msg && <p className={"bg-red-600 text-white dark:text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >{auth?.msg}</p>}
-                                    {auth?.errMsg && <p className={"bg-red-600 text-white dark:text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >{auth?.errMsg}</p>}
-                                    <div className="flex flex-row flex-2 flex-wrap gap-4 mt-10">
-                                        <div className="mt-3 flex flex-col">
-                                            {/* <ImageUpload/> */}
-                                            <label className={labelClass}>Email</label>
-                                            <input type="email" readOnly value={user?.user?.user_email} className={inputClassName} name="cliEmail" />
-                                            {emailErrMsg && cli?.cliEmail === "" ? <p className={InputErrClass}>Email cannot be empty</p> : ""}
-                                            {/* hidden inputs */}
-                                            <input type="hidden" onChange={handleChange} className={inputClassName} name="isVerifiedUser" value="Yes" />
-                                            <input type="hidden" onChange={handleChange} className={inputClassName} name="role" value="Yes" />
-                                            <input type="hidden" onChange={handleChange} className={inputClassName} name="cliTitle" value="Client" />
-                                            {/* end hidden inputs */}
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Phone</label>
-                                            <input type="number" onChange={handleChange} className={inputClassName} name="cliPhone" />
-                                            {phoneErrMsg && cli?.cliPhone === "" ? <p className={InputErrClass}>Phone cannot be empty</p> : ""}
-                                        </div>
-                                    
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >First Name</label>
-                                            <input type="text" onChange={handleChange} className={inputClassName} name="cliFirstName" />
-                                            {fnErrMsg && cli?.cliFirstName === "" ? <p className={InputErrClass} >First name cannot be empty</p> : ""}
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Last Name</label>
-                                            <input type="text" onChange={handleChange} className={inputClassName} name="cliLastName" />
-                                            {lnErrMsg && cli?.cliLastName === "" ? <p className={InputErrClass} >Last name cannot be empty</p> : ""}
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Language</label>
-                                            <select onChange={handleChange} className={inputClassName} name="cliLang">
-                                                {opts.map(({ option}, key) => (
-                                                    <option
-                                                        className={optClass}
-                                                        key={key}
-                                                    >
-                                                        {option}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {langErrMsg && cli?.cliLang === "" ? <p className={InputErrClass} >Language cannot be empty</p> : ""}
-                                        </div>
-                                        {/* <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Password</label>
-                                            <input type="password" onChange={handleChange} className={inputClassName} name="cliPass" />
-                                            {passErrMsg && cli?.cliPass === "" ? <p className={InputErrClass} >Password cannot be empty</p> : ""}
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Confirm Password</label>
-                                            <input type="password" onChange={handleChange} className={inputClassName} name="cliConfPass" />
-                                        </div> */}
+                    <form onSubmit={handleSubmit} className="flex justify-center shadow-xl rounded-md ">
+                        
+                            <div className="flex flex-col lg:w-[800px] flex-wrap mt-5 p-4">
+                                {auth?.authMsg &&
+                                    <p className={"bg-red-600 text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >
+                                        {auth?.authMsg}
+                                    </p>
+                                }
+                                <h1 className="text-black/100 dark:text-white font-bold text-center text-xl shadow-xl p-4 mt-20 mb-5">
+                                    Complete <span className="bg-warning p-2 text-white rounded-lg shadow-xl">Registration</span> 
+                                </h1>
+                                {/* <h1 className="text-black/100 dark:text-white font-bold text-center text-lg shadow-xl p-4 mt-10 mb-5">
+                                    Register now and get started with your trading journey
+                                </h1> */}
+                                {/* <p> Already have an account 
+                                    <button className="text-warning dark:text-white p-2 ml-2 shadow-lg rounded-lg" onClick={() => {
+                                        auth.setOpenSignIn(true)
+                                        auth.setOpenSignUp(false)
+                                    }}>
+                                        Login here
+                                    </button> 
+                                </p> */}
+                                {auth?.msg && <p className={"bg-red-600 text-white dark:text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >{auth?.msg}</p>}
+                                {auth?.errMsg && <p className={"bg-red-600 text-white dark:text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >{auth?.errMsg}</p>}
+                                <div className="flex flex-row flex-2 flex-wrap gap-4 mt-10">
+                                    <div className="mt-3 flex flex-col">
+                                        {/* <ImageUpload/> */}
+                                        <label className={labelClass}>Email</label>
+                                        <input type="email" readOnly value={user?.user?.user_email} className={inputClassName} name="cliEmail" />
+                                        {emailErrMsg && cli?.cliEmail === "" ? <p className={InputErrClass}>Email cannot be empty</p> : ""}
+                                        {/* hidden inputs */}
+                                        <input type="hidden" onChange={handleChange} className={inputClassName} name="isVerifiedUser" value="Yes" />
+                                        <input type="hidden" onChange={handleChange} className={inputClassName} name="role" value="Yes" />
+                                        <input type="hidden" onChange={handleChange} className={inputClassName} name="cliTitle" value="Client" />
+                                        {/* end hidden inputs */}
                                     </div>
-                                    <div className="border border-1 border-warning mt-10 rounded-md"></div>
-                                    <h1 className="text-black/100 mt-2 text-center font-bold text-lg underline dark:text-white">Billing info used for payment</h1>
-                                    <div className="border border-1 border-warning mt-2 mb-5 rounded-md"></div>
-                                    
-                                    <div className="flex flex-row flex-wrap gap-4">
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Country/Region</label>
-                                            <input type="text" onChange={handleChange} className={inputClassName} name="cliCountry" />
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Street Address</label>
-                                            <input type="text" onChange={handleChange} className={inputClassName}name="cliAddress" />
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Town/City</label>
-                                            <input type="text" onChange={handleChange} className={inputClassName} name="cliCity" />
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >Postal/zip</label>
-                                            <input type="number" onChange={handleChange} className={inputClassName} name="cliZip" />
-                                        </div>
-                                        <div className="mt-3 flex flex-col">
-                                            <label className={labelClass} >If you have a coupon code</label>
-                                            <input type="text" onChange={handleChange} className={inputClassName} name="cliCoupon" />
-                                        </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Phone</label>
+                                        <input type="number" onChange={handleChange} className={inputClassName} name="cliPhone" />
+                                        {phoneErrMsg && cli?.cliPhone === "" ? <p className={InputErrClass}>Phone cannot be empty</p> : ""}
                                     </div>
-                                    <button type="submit" className="w-full shadow-xl mt-3 mb-10 bg-warning rounded-md h-14 text-white dark:text-white">
-                                        Submit
-                                    </button>
+                                
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >First Name</label>
+                                        <input type="text" onChange={handleChange} className={inputClassName} name="cliFirstName" />
+                                        {fnErrMsg && cli?.cliFirstName === "" ? <p className={InputErrClass} >First name cannot be empty</p> : ""}
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Last Name</label>
+                                        <input type="text" onChange={handleChange} className={inputClassName} name="cliLastName" />
+                                        {lnErrMsg && cli?.cliLastName === "" ? <p className={InputErrClass} >Last name cannot be empty</p> : ""}
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Language</label>
+                                        <select onChange={handleChange} className={inputClassName} name="cliLang">
+                                            {opts.map(({ option}, key) => (
+                                                <option
+                                                    className={optClass}
+                                                    key={key}
+                                                >
+                                                    {option}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {langErrMsg && cli?.cliLang === "" ? <p className={InputErrClass} >Language cannot be empty</p> : ""}
+                                    </div>
+                                    {/* <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Password</label>
+                                        <input type="password" onChange={handleChange} className={inputClassName} name="cliPass" />
+                                        {passErrMsg && cli?.cliPass === "" ? <p className={InputErrClass} >Password cannot be empty</p> : ""}
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Confirm Password</label>
+                                        <input type="password" onChange={handleChange} className={inputClassName} name="cliConfPass" />
+                                    </div> */}
                                 </div>
-                        </form>
-                    )}
+                                <div className="border border-1 border-warning mt-10 rounded-md"></div>
+                                <h1 className="text-black/100 mt-2 text-center font-bold text-lg underline dark:text-white">Billing info used for payment</h1>
+                                <div className="border border-1 border-warning mt-2 mb-5 rounded-md"></div>
+                                
+                                <div className="flex flex-row flex-wrap gap-4">
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Country/Region</label>
+                                        <input type="text" onChange={handleChange} className={inputClassName} name="cliCountry" />
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Street Address</label>
+                                        <input type="text" onChange={handleChange} className={inputClassName}name="cliAddress" />
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Town/City</label>
+                                        <input type="text" onChange={handleChange} className={inputClassName} name="cliCity" />
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >Postal/zip</label>
+                                        <input type="number" onChange={handleChange} className={inputClassName} name="cliZip" />
+                                    </div>
+                                    <div className="mt-3 flex flex-col">
+                                        <label className={labelClass} >If you have a coupon code</label>
+                                        <input type="text" onChange={handleChange} className={inputClassName} name="cliCoupon" />
+                                    </div>
+                                </div>
+                                {auth.loading ? <Loader/> : (
+                                <button type="submit" className="w-full shadow-xl mt-3 mb-10 bg-warning rounded-md h-14 text-white dark:text-white">
+                                    Submit
+                                </button>
+                                )}
+                            </div>
+                    </form>
                 </div>
             }
             {auth.openGooglePayBtn && <GooglePay />}

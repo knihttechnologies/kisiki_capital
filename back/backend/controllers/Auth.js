@@ -78,7 +78,7 @@ const MaintainUserSession = async (req, res, next) => {
   if(req?.session?.user?.user_id){
     return res.status(200).json({valid: true, user: req?.session?.user})
   }else{
-    return res.status(200).json({valid: false})
+    return res.status(400).json({valid: false})
   }
 }
 const Logout = async (req, res, next) => {

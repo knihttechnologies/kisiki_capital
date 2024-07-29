@@ -26,7 +26,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware')
 const app = express();
 // CORS options to allow requests from frontend running on port 5500
 const corsOptions = {
-  origin: ['https://pay.google.com/gp/p/js/pay.js'],
+  origin: ['https://pay.google.com/gp/p/js/pay.js', 'http://localhost:60000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type',
@@ -47,19 +47,26 @@ const corsOptions = {
 //     changeOrigin: true
 //   })
 // )
-app.use(helmet({   
-  contentSecurityPolicy: {  
-    useDefaults: true, 
-    directives: { 
-       'script-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
-       'connect-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
-       'frame-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
-       'script-src-elem': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"] 
-    }, 
-  }
+// app.use(helmet(
+//   // {   
+//   //   contentSecurityPolicy: {  
+//   //     useDefaults: true, 
+//   //     directives: { 
+//   //       'script-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
+//   //       'connect-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
+//   //       'frame-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
+//   //       'script-src-elem': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"] 
+//   //     }, 
+//   //   }
+//   // }
+// ))
+app.use(helmet());
+// app.use(cors());
+app.use(cors({ 
+  origin: 'http://localhost:60000',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }))
-// app.use(helmet());
-app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(morgan("dev"));
@@ -80,9 +87,9 @@ app.use(session({
 //   next()
 // })
 //static files
-app.use(express.static(path.join(__dirname, 'dist')));
+//app.use(express.static(path.join(__dirname, 'dist')));
 // routes
-app.use('/Images', express.static('./Images'))
+//app.use('/Images', express.static('./Images'))
 app.use('/api/userprofilepicuploads', express.static(path.join(__dirname, 'Images/Usersimg')))
 app.use('/api/auth', auth)
 app.use('/api/admin', admin)
@@ -90,9 +97,9 @@ app.use('/api/users', users)
 app.use('/api/payments', payments)
 
 //catch all routes to serve the home page of the site
-app.use('*', function (request, response) {
-  response.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+// app.use('*', function (request, response) {
+//   response.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// });
 
 app.use(compression)
 app.use(cookieParser());

@@ -1,5 +1,5 @@
 import React from 'react'
-export const AuthInput = ({placeholder, type, name, value, onChange, onClick }) => {
+export const  AuthInput = ({placeholder, type, name, value, onChange, onClick }) => {
     return (
       <div className="relative h-10 mt-2 mb-2 ">
           <input name={name} value={value} onChange={onChange} onClick={onClick} type={type} placeholder={placeholder} 

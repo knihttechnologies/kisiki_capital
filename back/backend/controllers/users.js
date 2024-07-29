@@ -297,6 +297,9 @@ const RegisterOrders = async (req, res, next) => {
                             <h4 class="p-5 bg-slate-600 font-bold shadow-xl mt-2 mb-5 w-90 flex flex-wrap rounded-md"> Your order: <span class="text-white mr-2">${pkgtitle}</span> package.</h4>
                             <p class="text-center p-3 shadow-xl mt-2 mb-5 rounded-md text-sm w-50">Price: <span class="text-warning ml-2 ">$${pkgprice}</span></p>
                             <p class="text-center p-3 shadow-xl mt-2 mb-5 rounded-md text-sm w-50">Account balance: <span class="text-warning ml-2" >$${acctbal}</span></p>
+                            <p class="text-center p-3 shadow-xl mt-2 mb-5 rounded-md text-sm w-50">Account balance: <span class="text-warning ml-2" >$Login details</span></p>
+                            <p class="text-center p-3 shadow-xl mt-2 mb-5 rounded-md text-sm w-50">Account balance: <span class="text-warning ml-2" >$${useremail}</span></p>
+                            <p class="text-center p-3 shadow-xl mt-2 mb-5 rounded-md text-sm w-50">Account balance: <span class="text-warning ml-2" >$${userpass}</span></p>
                             <h2 class="p-5 bg-slate-600 font-bold shadow-xl mt-2 mb-5 w-90 flex flex-wrap rounded-md">Use the provided link to verify your email: </h2>
                             <a className="text-warning" href="https://kisikicapital.com/verify?emailAccessToken=${emailAccessToken}" >Verify your Email</a>
                             <h4 class="p-5 bg-slate-600 font-bold shadow-xl mt-2 mb-5 w-90 flex flex-wrap rounded-md">Thank you </h4>

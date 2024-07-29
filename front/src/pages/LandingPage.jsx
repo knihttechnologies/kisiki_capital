@@ -53,7 +53,7 @@ const LandingPage = () => {
             <div className="flex flex-wrap items-center">
               <div className="mt-40 ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
                 {/* <GooglePay />  */}
-                <button className='text-white' onclick={handleSubmit}>Pesa pal</button>
+                {/* <button className='text-white' onclick={handleSubmit}>Pesa pal</button> */}
                 <PropFirm />
                 {table?.tableErr && <p className="bg-red-500 mb-5 text-white rounded-md text-sm p-3">{table?.tableErr}</p> }
                 {table?.tableMsg && <p className="bg-green-500 mb-5 text-white rounded-md text-sm p-3">{table?.tableMsg}</p> }
@@ -193,15 +193,16 @@ const LandingPage = () => {
               </h3>
             </div>
             <div className="flex flex-wrap gap-5">
-                {whyData.map(({ icon, desc, index}) => (
+                {whyData.map((value, key) => (
                   <>
                     <div 
-                      className="flex flex-row flex-wrap mt-5 mb-5 p-2 w-60 h-10 text-center items-center bg-warning font-10 text-white gap-1 rounded-lg " key={index}
+                      key={key}
+                      className="flex flex-row flex-wrap mt-5 mb-5 p-2 w-60 h-10 text-center items-center bg-warning font-10 text-white gap-1 rounded-lg "
                     >
-                      {React.createElement(icon, {
+                      {React.createElement(value?.icon, {
                         className: "w-6 h-6 text-white dark:text-white",
                       })}
-                      {desc}
+                      {value?.desc}
                     </div>
                   </>
                 ))}

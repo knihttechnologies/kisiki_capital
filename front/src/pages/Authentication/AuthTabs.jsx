@@ -26,7 +26,7 @@ const AuthTabs = () => {
                         auth.setOpenAuthTab(1);
                     }}
                     data-toggle="tab"
-                    href="#link1"
+                    href="#linksignin"
                     role="tablist"
                     >
                     Sign In
@@ -45,7 +45,7 @@ const AuthTabs = () => {
                         auth.setOpenAuthTab(2);
                     }}
                     data-toggle="tab"
-                    href="#link2"
+                    href="#linksignup"
                     role="tablist"
                     >
                         Sign Up
@@ -55,10 +55,10 @@ const AuthTabs = () => {
             <div className="flex flex-col min-w-0 break-words mb-6 shadow-lg rounded dark:border-strokedark dark:bg-boxdark">
                 <div className="px-4 py-5 dark:border-strokedark dark:bg-boxdark">
                     <div className="w-full dark:border-strokedark dark:bg-boxdark">
-                        <div className={`${auth.openAuthTab === 1 ? "block" : "hidden"}`} id="link1">
+                        <div className={`${auth.openAuthTab === 1 ? "block" : "hidden"}`} id="linksignin">
                             <SignIn /> 
                         </div>
-                        <div className={`${auth.openAuthTab === 2 ? "block" : "hidden"}`} id="link2">
+                        <div className={`${auth.openAuthTab === 2 ? "block" : "hidden"}`} id="linksignup">
                             <SignUp />
                         </div>
                     </div>

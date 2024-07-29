@@ -66,18 +66,18 @@ export function Navbar({ brandName, routes, action }) {
       <div className="container flex-row items-center justify-between text-white mb-1 hidden lg:flex">
         <div className="flex flex-row flex-wrap gap-10">
           <p className="ml-10 text-xs">Tel: <Link to="tel:+255767743057" className="hover:text-warning">+255 767743057</Link></p>
-          <p className="ml-5 text-xs">Email: <Link to='javascript:void(0)' onClick={() => window.location = 'mailto:enquiries@kisikicapital.com'} className="hover:text-warning">enquiries@kisikicapital.com</Link></p>
+          <p className="ml-5 text-xs">Email: <Link to='#' onClick={() => window.location = 'mailto:enquiries@kisikicapital.com'} className="hover:text-warning">enquiries@kisikicapital.com</Link></p>
         </div>
         <div className=" flex flex-row flex-wrap gap-4 mr-10 ">
           <Link to="tel:+255767743057" className="hover:text-warning"><FaPhoneSquare /></Link>
           <Link to="https://t.me/kisiki_capital" className="hover:text-warning"><FaTelegram /></Link>
           <Link to="https://instagram.com/kisiki_capital" className="hover:text-warning"><FaInstagram /></Link>
           <Link to="https://x.com/kisiki_capital" className="bg-white hover:bg-warning rounded-full p-1">
-          <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" width="10px" height="10px" viewBox="0 0 24 24" xml:space="preserve">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" width="10px" height="10px" viewBox="0 0 24 24" xmlSpace="preserve">
             <path d="M14.095479,10.316482L22.286354,1h-1.940718l-7.115352,8.087682L7.551414,1H1l8.589488,12.231093L1,23h1.940717  l7.509372-8.542861L16.448587,23H23L14.095479,10.316482z M11.436522,13.338465l-0.871624-1.218704l-6.924311-9.68815h2.981339  l5.58978,7.82155l0.867949,1.218704l7.26506,10.166271h-2.981339L11.436522,13.338465z"/>
           </svg>
           </Link>
-          <Link className="hover:text-warning" to='javascript:void(0)' onClick={() => window.location = 'mailto:enquiries@kisikicapital.com'}>
+          <Link className="hover:text-warning" to='#' onClick={() => window.location = 'mailto:enquiries@kisikicapital.com'}>
               <FaEnvelope />
           </Link>
         </div>
