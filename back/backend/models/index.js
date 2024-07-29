@@ -40,6 +40,7 @@ db.sequelize.sync({ force: false})
 //IMPORTING MODELS
 db.Admin = require('./Admin')(sequelize, DataTypes)
 db.Users = require('./Users')(sequelize, DataTypes)
+db.Sessions = require('./Sessions')(sequelize, DataTypes)
 db.Company = require('./Company')(sequelize, DataTypes)
 db.UserRole = require('./UserRole')(sequelize, DataTypes)
 db.UserLogin = require('./UserLogin')(sequelize, DataTypes)
@@ -133,5 +134,12 @@ db.Company.hasMany(db.LiveSupport, {
 })
 db.LiveSupport.belongsTo(db.Company, {
     foreignKey: 'company_id'
+})
+//relation for company and live support
+db.Users.hasMany(db.Sessions, {
+    foreignKey: 'user_id'
+})
+db.Sessions.belongsTo(db.Users, {
+    foreignKey: 'user_id'
 })
 module.exports = db

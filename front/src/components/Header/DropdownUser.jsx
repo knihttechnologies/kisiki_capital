@@ -4,6 +4,7 @@ import { useAuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import UserOne from '@/images/user/kisiki-ceo.jpg';
 import { jwtDecode } from 'jwt-decode';
+import { makeRequest } from '../../api/makeRequest';
 
 const DropdownUser = () => {
   const navigate = useNavigate()
@@ -16,13 +17,13 @@ const DropdownUser = () => {
     auth.setUser(null);
     auth.setToken("");
     auth.setPersist(false)
-    await axios.post("/api/auth/logout").then(res => {
+    await makeRequest.post("/api/auth/logout").then(res => {
       auth.setMsg(res?.data?.message)
-  }).catch(err => {
-      setAuthErrMsg("Failed to logout", err)
-  })
+    }).catch(err => {
+        setAuthErrMsg("Failed to logout", err)
+    })
     //localStorage.removeItem("person");
-    navigate("/");
+    navigate("/auth");
   };
  
   // close on click outside

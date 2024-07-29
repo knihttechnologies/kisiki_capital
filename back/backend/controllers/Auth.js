@@ -36,7 +36,7 @@ const Login = async (req, res, next) => {
   }],
   })
   //debugging
-  console.log(userSession)
+  // console.log(userSession)
   //check if the information exists.
   if (!userSession) return res.status(400).json({ message: "Information doesnt exist please sign up or put the correct information" })
   //check if the password is a match
@@ -46,7 +46,8 @@ const Login = async (req, res, next) => {
   //create the user access token
   //for debugging to check if the access token secret exists
   //console.log(secretKey.accessTokenSecret)
-  req.session.user = userSession
+  req.session.cookie.user = userSession
+  //console.log(req.session)
   if(secretKey.accessTokenSecret === " " || secretKey.accessTokenSecret === null || secretKey.accessTokenSecret === undefined)
     return console.log("accessTokenSecret is empty") && res.status(400).json({ message: "Missing secret!" })
   const accessToken = jwt.sign({userSession}, secretKey.accessTokenSecret,{
@@ -75,8 +76,9 @@ const Login = async (req, res, next) => {
 //    res.json({ message: "Welcome Back!", token: jwtToken })
 }
 const MaintainUserSession = async (req, res, next) => {
-  if(req?.session?.user?.user_id){
-    return res.status(200).json({valid: true, user: req?.session?.user})
+  //console.log(req?.session)
+  if(req?.session?.cookie){
+    return res.status(200).json({valid: true, user: req?.session?.cookie?.user})
   }else{
     return res.status(400).json({valid: false})
   }

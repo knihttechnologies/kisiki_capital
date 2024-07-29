@@ -5,15 +5,16 @@ import { jwtDecode } from "jwt-decode";
 //import { useAuthContext } from "../context/AuthContext";
 import { userFetch } from "./useFetch";
 import axios from "axios";
+import { makeRequest } from "../api/makeRequest";
 
 const RequireAuth = ({ allowedRoles }) => {
     const auth = useAuthContext()
     const location = useLocation()
     const navigate = useNavigate()
-    axios.defaults.withCredentials = true
-    axios.get("/api/auth/authenticate")
+    //axios.defaults.withCredentials = true
+    makeRequest.get("/api/auth/authenticate")
     .then(res => {
-        if(res?.data?.valid){
+        if(res?.data?.valid === true){
             return auth.setUser(res?.data?.user)
         }else{
             auth.setMsg("You are not logged in")
@@ -27,9 +28,12 @@ const RequireAuth = ({ allowedRoles }) => {
     //     userurl: "/api/user/allusers"
     // }
     // const {user, usersLoading, errMsg} = userFetch(urls?.userurl)
-    // const loggedInUser = JSON.parse(localStorage.getItem("person")) || false;
-    // if(!loggedInUser) return <Navigate to="/auth" state={{ from: location }} replace />
-    // const foundUser = jwtDecode(loggedInUser);
+    const loggedInUser = JSON.parse(localStorage.getItem("person")) || false;
+    if(!loggedInUser) return <Navigate to="/auth" state={{ from: location }} replace />
+    const foundUser = jwtDecode(loggedInUser);
+    useEffect(()=>{
+        auth.setUser(foundUser?.userSession)
+    },[])
     // console.log(foundUser)
     const role = auth.user?.user_role?.role_name
     return (
@@ -37,7 +41,7 @@ const RequireAuth = ({ allowedRoles }) => {
             ? <Outlet/>
             : auth?.user?.user_id //changed from user to accessToken to persist login after refresh
                 ? <Navigate to="/dashboard" state={{ from: location }} replace />
-                : <Navigate to="/" state={{ from: location }} replace />
+                : <Navigate to="/auth" state={{ from: location }} replace />
     );
 }
 

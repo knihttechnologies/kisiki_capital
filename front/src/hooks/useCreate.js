@@ -51,9 +51,9 @@ const useCreate = () => {
         roleId
       })
       console.log(response)
-      if(!response) return auth.setErrMsg("The server is offline")
-      if(response.status === 409) return auth.setErrMsg(`${response?.data?.message}`)
-      auth.setMsg(`${response.data.message}`)
+      // if(!response) return auth.setErrMsg("The server is offline")
+      // if(response.status === 409) return auth.setErrMsg(`${response?.data?.message}`)
+      // auth.setMsg(`${response.data.message}`)
       return response
     } catch (err) {
       //console.log(err)

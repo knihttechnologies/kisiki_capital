@@ -4,7 +4,6 @@ import { userOrderFetch } from '../../hooks/useFetch';
 
 const ChartOne = () => {
   const auth = useAuthContext()
- // const location = useLocation();
   const id = auth?.user?.user_id
   const urls = {
     ordersurl: `/api/users/oneorder/${id}`

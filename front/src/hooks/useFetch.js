@@ -11,7 +11,7 @@ export const useFetch = (url) => {
     const fetchData = async () => {
       setLoadingfetched(true);
       try {
-        await axios.post('/api/users/createrolesmanually', {timeout: 10000})
+        await makeRequest.post('/api/users/createrolesmanually', {timeout: 10000})
           .then(res => {
             if (isMounted) {
               setDataFetched(res.data);
@@ -54,7 +54,7 @@ export const userFetch = (url) => {
     const fetchData = async () => {
       setUsersLoading(true);
       try {
-        await axios.get(url, {timeout: 10000})
+        await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             if (isUserMounted) {
                 setUser(res.data);
@@ -96,10 +96,10 @@ export const userOrderFetch = (url) => {
     const fetchData = async () => {
       setUserOrderLoading(true);
       try {
-        await axios.get(url, {timeout: 10000})
+        await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             if (isUserMounted) {
-                setUserOrder(res.data);
+                setUserOrder(res?.data);
                 setOrderErrMsg(null);
             }
           })
@@ -138,7 +138,7 @@ export const userPaymentFetch = (url) => {
     const fetchData = async () => {
       setUserOrderLoading(true);
       try {
-        await axios.get(url, {timeout: 10000})
+        await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             if (isUserMounted) {
                 setUserPayment(res.data);
@@ -227,7 +227,7 @@ export const rulesFetch = (url) => {
         //   setDataFetched(response.data);
         //   setfetchedError(null);
         // }
-        await axios.get(url, {timeout: 10000})
+        await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             console.log(res)
             if (isRulesMounted) {
@@ -271,7 +271,7 @@ export const ordersFetch = (url) => {
     const fetchData = async () => {
       setOrdersLoading(true);
       try {
-        await axios.get(url, {timeout: 10000})
+        await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             //for debugging purpose
             //console.log(res)
@@ -320,7 +320,7 @@ export const paymentsFetch = (url) => {
     const fetchData = async () => {
       setPaymentsLoading(true);
       try {
-        await axios.get(url, {timeout: 10000})
+        await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             //for debugging purpose
             //console.log(res)

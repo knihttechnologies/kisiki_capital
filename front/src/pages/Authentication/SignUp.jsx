@@ -7,6 +7,7 @@ import Logo from '../../images/kisiki-capital-01.png'
 import SignIn from '../../pages/Authentication/SignIn'
 import useCreate from '../../hooks/useCreate'
 import Loader from '../../common/Loader'
+import { makeRequest } from '../../api/makeRequest'
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -71,37 +72,32 @@ const SignUp = () => {
     //handle submit to the server
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(cli.cliEmail === "") return setEmailErrMsg(true)
-        if(cli.cliPhone === "") return setPhoneErrMsg(true)
-        if(cli.cliFirstName === "") return setFnErrMsg(true)
-        if(cli.cliLastName === "") return setLnErrMsg(true)
-        if(cli.cliLang === "") return setLangErrMsg(true)
-        else if(cli.cliPass === "") return setPassErrMsg(true)
-        else if(cli.cliPass !== cli.cliConfPass) return setCliErrMsg(`The Password and confirm Password dont match`)
-        const res = await createUser({ title: cli.cliTitle, email: user?.user?.user_email, phone: cli.cliPhone, firstname: cli.cliFirstName, lastname: cli.cliLastName, lang: cli.cliLang, password: user?.user?.user_password, country: cli.cliCountry, address: cli.cliAddress, city: cli.cliCity, zip: cli.cliZip, coupon: cli.cliCoupon, isVerifiedUser: cli.isVerifiedUser, roleId: cli.role})
-        // .then((res)=>{
-        //     if(res?.status===201) { 
-        //         auth.setOpenSignUp(false)
-        //         auth.setOpenGooglePayBtn(true)
-        //         //auth.setOpenSignIn(true)
-        //     }
-        //     console.log(res)
-        // }).catch(err => {
-        //     console.log(err)
-        // })
-        //for debugging purposes
-        //auth.setShowModal(false)
-        if(res?.status===200) {
-            auth.setOpenSignUp(false)
-            //for google pay
-            auth.setOpenGooglePayBtn(true)
-            //for pesapal button
-            auth.setPesapalBtn(true);
-            auth.setNowPaymentsBtn(true)
-            //auth.setOpenSignIn(true)
+        try {
+            if(cli.cliEmail === "") return setEmailErrMsg(true)
+            if(cli.cliPhone === "") return setPhoneErrMsg(true)
+            if(cli.cliFirstName === "") return setFnErrMsg(true)
+            if(cli.cliLastName === "") return setLnErrMsg(true)
+            if(cli.cliLang === "") return setLangErrMsg(true)
+            else if(cli.cliPass === "") return setPassErrMsg(true)
+            else if(cli.cliPass !== cli.cliConfPass) return setCliErrMsg(`The Password and confirm Password dont match`)
+            const res = await createUser({ title: cli.cliTitle, email: cli.cliEmail, phone: cli.cliPhone, firstname: cli.cliFirstName, lastname: cli.cliLastName, lang: cli.cliLang, password: cli.cliPass, country: cli.cliCountry, address: cli.cliAddress, city: cli.cliCity, zip: cli.cliZip, coupon: cli.cliCoupon, isVerifiedUser: cli.isVerifiedUser, roleId: cli.role})
+            console.log(res)
+            if(res?.status===201) {
+                auth.setAuthMsg(res?.data?.message)
+                auth.setOpenAuthTab(1)
+                return navigate('/auth')
+            } 
+        } catch (error) {
+            console.log("error:", error)
         }
+        
     //The 201 Created status code means that the request was successfully fulfilled and resulted in one or possibly multiple new resources being created.
     };
+    //handle creation of roles
+    const handleRoles = async () => {
+        const roles = await makeRequest.post('/api/users/createrolesmanually')
+        console.log(roles)
+    }
 
   return (
     <>
@@ -109,13 +105,14 @@ const SignUp = () => {
         <Link to={"/"}>
           <img className="w-35 h-15" src={Logo} alt="Logo" />
         </Link>
+        <button onClick={handleRoles} className="text-slate-200">Roles</button>
       </div>
       <div>
         <form onSubmit={handleSubmit} className="flex justify-center shadow-xl rounded-lg ">
             
                 <div className="flex flex-col lg:w-[800px] flex-wrap mt-5 p-4">
                     {auth?.authMsg &&
-                        <p className={"bg-red-600 text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >
+                        <p className={"bg-green-600 text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >
                             {auth?.authMsg}
                         </p>
                     }
@@ -139,7 +136,7 @@ const SignUp = () => {
                         <div className="mt-3 flex flex-col">
                             {/* <ImageUpload/> */}
                             <label className={labelClass}>Email</label>
-                            <input type="email" placeholder="Enter your email" defaultValue={cli?.cliEmail} className={inputClassName} name="cliEmail" />
+                            <input type="email" placeholder="Enter your email" onChange={handleChange} defaultValue={cli?.cliEmail} className={inputClassName} name="cliEmail" />
                             {emailErrMsg && cli?.cliEmail === "" ? <p className={InputErrClass}>Email cannot be empty</p> : ""}
                             {/* hidden inputs */}
                             {/* <input type="hidden" onChange={handleChange} className={inputClassName} name="isVerifiedUser" value={cli?.isVerifiedUser} />

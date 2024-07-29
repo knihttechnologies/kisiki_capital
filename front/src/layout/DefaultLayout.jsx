@@ -5,12 +5,13 @@ import useAuth from '../hooks/useAuth';
 import { useAuthContext } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
 import axios from 'axios';
+import { makeRequest } from '../api/makeRequest';
 
 const DefaultLayout = ({ children }) => {
   const auth = useAuthContext()
   const { sidebarOpen, setSidebarOpen } = useAppContext()
     // useEffect(()=>{
-      axios.get("/api/auth/authenticate")
+      makeRequest.get("/api/auth/authenticate")
       .then(res => {
           const role = res?.data?.user?.user_role?.role_name
           if(res?.data?.valid){
@@ -19,7 +20,7 @@ const DefaultLayout = ({ children }) => {
             if(role == "Superadmin") return navigate("/admindash")
           }else{
             auth.setAuthErrMsg("You are not logged in")
-            return navigate('/')
+            return navigate('/auth')
           }
       }).catch(err => {
           auth.setAuthErrMsg("Failed to authenticate the user", err)

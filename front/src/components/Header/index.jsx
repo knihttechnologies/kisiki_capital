@@ -9,10 +9,10 @@ import { useAuthContext } from '../../context/AuthContext';
 const Header = ({sidebarOpen, setSidebarOpen}) => {
   const auth = useAuthContext()
   const navigate = useNavigate()
-  console.log(auth?.user?.user_id)
+  //console.log(auth?.user?.user_id)
   if(auth?.user?.user_id === undefined || auth?.user?.user_id === null){
     auth?.setAuthErrMsg('Not authorized')
-     navigate('/')
+     navigate('/auth')
   }
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">

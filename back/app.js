@@ -13,11 +13,14 @@ const {payments} = require('./backend/routes/trans')
 //const port = process.env.PORT //|| 4000
 const { notFound, errorHandler, badRequest } = require("./backend/middleware/exceptions")
 const compression = require("compression")
+//stores
 const MemoryStore = require('memorystore')(session)
+const SequelizeStore = require("connect-session-sequelize")(session.Store)
 const config = require("./config")
 const { hostname, port, allowedDomains, remote_client_app } = config;
 require('dotenv').config()
 const { createProxyMiddleware } = require('http-proxy-middleware')
+const db = require('./backend/models')
 //Multer is a Node.js middleware that we use for handling requests from multipart/form-data, 
 //and specifically for handling file uploads.
 //const multer = require('multer')
@@ -40,26 +43,20 @@ const corsOptions = {
   credentials: true,
   maxAge: 600 // 10 minutes
 };
+const extendDefaultFields = (defaults, session) => {
+  return {
+    data: defaults.data,
+    expires:defaults.expires,
+    user_id: session.userid
+  }
+}
+const store = new SequelizeStore({
+  db: db.sequelize,
+  table: "sessions",
+  extendDefaultFields: extendDefaultFields
+})
+
 //middleware
-// app.use('/api',
-//   createProxyMiddleware({
-//     target: 'http://localhost:60000',
-//     changeOrigin: true
-//   })
-// )
-// app.use(helmet(
-//   // {   
-//   //   contentSecurityPolicy: {  
-//   //     useDefaults: true, 
-//   //     directives: { 
-//   //       'script-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
-//   //       'connect-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
-//   //       'frame-src': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"], 
-//   //       'script-src-elem': ["'self'", "https://pay.google.com/gp/p/js/pay.js", "https://pay.google.com/"] 
-//   //     }, 
-//   //   }
-//   // }
-// ))
 app.use(helmet());
 // app.use(cors());
 app.use(cors({ 
@@ -72,12 +69,11 @@ app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  store: new MemoryStore({
-    checkPeriod: 86400000 // prune expired entries every 24h
-  }),
+  store: store,
   saveUninitialized: true,
   resave: false,
   cookie: {
+    user: {},
     httpOnly: true,
     maxAge: parseInt(process.env.SESSION_MAX_AGE)
   }

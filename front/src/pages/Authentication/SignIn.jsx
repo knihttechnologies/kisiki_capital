@@ -76,10 +76,11 @@ const SignIn = () => {
           </Link>
         </div>
       <form className="container w-full mt-10 flex justify-center shadow-xl rounded-md " id='login' onSubmit={handleSubmit}>
-        {auth.msg && <p className={"bg-primary text-white rounded-2xl mb-5 p-2 text-center "} >{auth.msg}</p>}
-        {auth.authErrMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth.authErrMsg}</p>}
-        {auth.errMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth.errMsg}</p>}
-        {table.tableErr && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{table.tableErr}</p>}
+        {auth?.msg && <p className={"bg-primary text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.msg}</p>}
+        {auth?.authMsg && <p className={"bg-green-600 text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >{auth?.authMsg}</p>}
+        {auth?.authErrMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.authErrMsg}</p>}
+        {auth?.errMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.errMsg}</p>}
+        {table?.tableErr && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{table?.tableErr}</p>}
         {/* <p className="mt-2 mb-5"> Don't have an account 
             <button className="text-warning p-2 ml-2 shadow-lg rounded-lg" onClick={() => {
                 auth.setOpenSignIn(false)

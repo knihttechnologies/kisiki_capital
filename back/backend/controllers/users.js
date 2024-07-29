@@ -62,8 +62,9 @@ const createRolesManually = async ( req, res) => {
 }
 
 const requireAuth = (req, res, next) => {
-    const {user} = req.session
-    if(!user){
+    console.log(req.session)
+    const {user_id} = req.session
+    if(!user_id){
         return res.status(401).json({message: 'Unauthorized'})
     }
     next();
@@ -130,16 +131,17 @@ const Register = async (req, res) => {
         if ( title === " " || firstname === " " || lastname === " " || country === " " || email === " " || password === " " || isVerifiedUser === undefined) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
-        const salt = await bcrypt.genSalt()
-        const hashPassword = await bcrypt.hash(password, salt)
-        // Check if the team name already exists
+        // Check if the user already exists
         const existingUser = await Users.findOne({ where: { user_email: email } });
         console.log(existingUser)
         if (existingUser) {
             console.log(`The user ${existingUser.user_firstname} already exists`);
             return res.status(409).json({ message: `The user ${existingUser.user_email} already exists` });
         }
-        console.log(existingUser)
+        // console.log(existingUser)
+        // console.log(password)
+        const salt = await bcrypt.genSalt()
+        const hashPassword = await bcrypt.hash(password, salt)
         // Create a new team record
         const newUser = await Users.create({
             user_title: title,  

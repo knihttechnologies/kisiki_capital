@@ -36,8 +36,8 @@ const auth = express.Router()
 
 //Auth
 auth.post('/login', Login)
-auth.get('/authenticate', MaintainUserSession)
-auth.post('/logout', Logout)
+auth.get('/authenticate', requireAuth, MaintainUserSession)
+auth.post('/logout', requireAuth, Logout)
 auth.get('/refresh', RefreshToken)
 //Admin
 // admin.get('/allusers', getAllUsers)
