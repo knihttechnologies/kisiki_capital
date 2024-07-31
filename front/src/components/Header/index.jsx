@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
@@ -9,6 +9,7 @@ import { useAuthContext } from '../../context/AuthContext';
 // import { jwtDecode } from 'jwt-decode';
 
 const Header = ({sidebarOpen, setSidebarOpen}) => {
+  const location = useLocation()
   const auth = useAuthContext()
   const navigate = useNavigate()
   const loggedInUser = JSON.parse(localStorage.getItem("person")) || false;

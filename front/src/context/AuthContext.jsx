@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
             setLoading(true)
             const response = await makeRequest.post("/api/auth/login", { userEmail, userPass })
             if(!response) return setAuthErrMsg("")
-            console.log(response)
+            //console.log(response)
             if (response.status === 201) {
                 const userData = jwtDecode(response?.data?.accessToken)
                 const role = userData.userSession?.user_role?.role_name
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }) => {
                 if(role !== "Superadmin" || role !== "User") return setAuthErrMsg("you are not a registered user");
             }
         } catch (error) {
-            console.log(error)
+            //console.log(error)
             if (error?.response?.status === 400) return setAuthErrMsg(error?.response?.data?.message)
         }
             
@@ -141,7 +141,7 @@ export const AuthProvider = ({ children }) => {
       setMsg("You have been logged out")
       setPersist(false)
       localStorage.removeItem("person");
-      localStorage.removeItem("order");
+      //localStorage.removeItem("order");
       navigate("/");
     };
 

@@ -21,25 +21,19 @@ const packageData = [
 const UserOrders = () => {
   const auth = useAuthContext()
     //const location = useLocation();
-    const id = auth?.user?.user_id
     // const loggedInUser = JSON.parse(localStorage.getItem("person")) || false;
     // if(!loggedInUser) return <Navigate to="/auth" state={{ from: location }} replace />
     // const foundUser = jwtDecode(loggedInUser);
     // console.log(foundUser)
-    // const id = foundUser.userSession?.user_id
+    // auth.setUser(foundUser.userSession)
+    const id = auth?.user?.user_id
   const urls = {
     ordersurl: `/api/users/oneorder/${id}`
   }
   const {userOrder, userOrderLoading, orderErrMsg} = userOrderFetch(urls?.ordersurl)
   // for debugging purpose
   // console.log(orders)
-  //if (userOrder === null || !userOrder|| userOrder === undefined) return <p>No order has been registered yet</p> 
-  if (userOrderLoading) {
-      return <p>Loading...</p>;
-  }
-  if (orderErrMsg) {
-      return <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{orderErrMsg}</p>;
-  }
+  
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -73,7 +67,7 @@ const UserOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {userOrder.length > 0 ? userOrder.map((order) => (
+            {userOrderLoading ? <p>Loading...</p> : userOrder !== null ? userOrder?.map((order) => (
               <tr key={order?.order_id}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -110,7 +104,7 @@ const UserOrders = () => {
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
                       order?.status === 'Paid'
                         ? 'bg-success text-success'
-                        : order.status === 'Unpaid'
+                        : order?.status === 'Unpaid'
                         ? 'bg-danger text-danger'
                         : 'bg-warning text-warning'
                     }`}
@@ -188,7 +182,7 @@ const UserOrders = () => {
                   </div>
                 </td> */}
               </tr>
-            )): " "}
+            )): <p className="text-sm mt-5 mb-5 text-warning shadow-md p-3">You have no order registered yet</p>}
           </tbody>
         </table>
       </div>

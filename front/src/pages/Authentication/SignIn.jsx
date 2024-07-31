@@ -60,6 +60,10 @@ const SignIn = () => {
         auth.setAuthErrMsg()
         table.setTableErr()
       }, 10000);
+      //make the inputs empty so that login doesnt persist when logged out
+      auth.userAuth.email = "" 
+      auth.userAuth.password = ""
+      
     }else {
       auth.setErrMsg("Email or password cannot be empty")
       return //navigate("/signin")
@@ -79,8 +83,7 @@ const SignIn = () => {
         {auth?.msg && <p className={"bg-primary text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.msg}</p>}
         {auth?.authMsg && <p className={"bg-green-600 text-white rounded-md text-center pt-2 pb-2 shadow-xl"} >{auth?.authMsg}</p>}
         {auth?.authErrMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.authErrMsg}</p>}
-        {auth?.errMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.errMsg}</p>}
-        {table?.tableErr && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{table?.tableErr}</p>}
+        {/* {auth?.errMsg && <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{auth?.errMsg}</p>} */}
         {/* <p className="mt-2 mb-5"> Don't have an account 
             <button className="text-warning p-2 ml-2 shadow-lg rounded-lg" onClick={() => {
                 auth.setOpenSignIn(false)

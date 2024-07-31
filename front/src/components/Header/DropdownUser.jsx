@@ -22,7 +22,7 @@ const DropdownUser = () => {
     }).catch(err => {
         setAuthErrMsg("Failed to logout", err)
     })
-    //localStorage.removeItem("person");
+    localStorage.removeItem("person");
     navigate("/auth");
   };
  
@@ -157,7 +157,7 @@ const DropdownUser = () => {
                 </Link>
               </li>
             </ul>
-            <button onClick={logOut} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+            <button onClick={auth.logOut} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
               <svg
                 className="fill-current"
                 width="22"
