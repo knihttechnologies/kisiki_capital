@@ -10,19 +10,13 @@ const ChartOne = () => {
   }
   const {userOrder, userOrderLoading, orderErrMsg} = userOrderFetch(urls?.ordersurl)
   // for debugging purpose
-  // console.log(orders)
-  if (userOrder === null || !userOrder || userOrder === undefined) return <p>No order has been registered yet</p> 
-  if (userOrderLoading) {
-      return <p>Loading...</p>;
-  }
-  if (orderErrMsg) {
-      return <p className={"bg-red-500 text-white rounded-2xl mb-5 p-2 text-center "} >{orderErrMsg}</p>;
-  }
+  if (userOrderLoading) return <p>Loading...</p>;
+
   const divisionClass = "p-2 mt-4 mb-4 flex flex-wrap"
   return (
     <div className="col-span-12 rounded-md border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-6">
       <div className="" >Current orders</div>
-      {userOrder.map((order) => (
+      {userOrderLoading ? <p>Loading...</p> : userOrder !== null ? userOrder?.map((order) => (
               <div key={order?.order_id}>
                 <div className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">
@@ -59,7 +53,7 @@ const ChartOne = () => {
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
                       order?.status === 'Paid'
                         ? 'bg-success text-success'
-                        : order.status === 'Unpaid'
+                        : order?.status === 'Unpaid'
                         ? 'bg-danger text-danger'
                         : 'bg-warning text-warning'
                     }`}
@@ -69,7 +63,7 @@ const ChartOne = () => {
                 </div>
                 
               </div>
-            ))}
+            )): <p className="text-sm mt-5 mb-5 text-warning shadow-md p-3">You have no order registered yet</p>}
     </div>
   );
 };

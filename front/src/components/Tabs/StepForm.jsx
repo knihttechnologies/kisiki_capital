@@ -11,8 +11,11 @@ import { useAuthContext } from '../../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import GooglePay from '../../api/GooglePay';
+import { useTableContext } from '../../context/TableContext';
+import { makeRequest } from '../../api/makeRequest';
 
 const StepForm = ({color}) => {
+    const updateContext = useTableContext();
     //const location = useAuthContext()
     // const loggedInUser = localStorage.getItem("person");
     // const foundUser = jwtDecode(loggedInUser);
@@ -32,36 +35,20 @@ const StepForm = ({color}) => {
     const [cardPrice, setCardPrice] = React.useState(10000);
     const [checked, setChecked] = React.useState(1);
     const [userFormData, setUserFormData] = React.useState({
+        useremail: updateContext.order.useremail,
+        userpass: "",
         entitytype: '',
-        pkgtitle: '',
-        pkgprice: 0,
-        tradingcurrency: '',
-        acctbal: 0,
+        pkgtitle: updateContext.order.pkgtitle,
+        pkgprice: updateContext.order.pkgprice,
+        tradingcurrency: 'USD',
+        acctbal: updateContext.order.acctbal,
         platform: '',
         type: '',
-        discount: 0,
-        title: '',
-        firstname: '',
-        lastname: '',
-        email: '',
-        companyName: '',
-        vatNumber: '',
-        businessRegNo: '',
-        compcountry: '',
-        comppostalCode: '',
-        compcity: '',
-        compaddress: '',
-        compphonenumber: '',
-        billingCountry: '',
-        billingPostalCode: '',
-        billingCity: '',
-        billingAddress: '',
-        billingPhoneNumber: '',
-        isverifiedCompany: '',
+        discount: '',
         status: 'Pending',
         checkedOne: false,
         checkedTwo: false,
-        userId: data?.user_id
+        userId: ''
     });
 
     const userDetails = {
@@ -105,7 +92,7 @@ const StepForm = ({color}) => {
     }) => {
         try {
             auth.setLoading(true);
-            const response = await axios.post("/api/auth/users/registersubscriber", { 
+            const response = await makeRequest.post("/api/auth/users/registersubscriber", { 
                 entitytype,
                 pkgtitle,
                 pkgprice,

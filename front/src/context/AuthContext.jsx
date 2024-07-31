@@ -99,57 +99,32 @@ export const AuthProvider = ({ children }) => {
     const [fetchedError, setFetchedError] = useState({});
     //login function
     const loginAction = async (userEmail, userPass) => {
+        
         try {
-            setLoading(true);
-           const alreadyAutheniticated = await makeRequest.get("/api/auth/authenticate")
-            // .then(res => {
-            //     const role = res?.data?.user?.user_role?.role_name
-            //     if(res?.data?.valid){
-            //         setUser(res?.data?.user)
-            //         if(role == "User") return navigate("/dashboard");
-            //         if(role == "Superadmin") return navigate("/admindash")
-            //     }else{
-            //         setAuthMsg("Not authorized")
-            //         return navigate('/')
-            //     }
-            // }).catch(err => {
-            //     setAuthErrMsg("There was an error in authentication", err)
-            // })
-            if (alreadyAutheniticated?.data?.valid === true){
-                const role = alreadyAutheniticated?.data?.user?.user_role?.role_name
-                role == "User" 
-                    ? navigate("/dashboard") 
-                    : role == "Superadmin" 
-                        ? navigate("/admindash")
-                        : setAuthErrMsg("Not authorized") && navigate('/auth')
+            setLoading(true)
+            const response = await makeRequest.post("/api/auth/login", { userEmail, userPass })
+            if(!response) return setAuthErrMsg("")
+            console.log(response)
+            if (response.status === 201) {
+                const userData = jwtDecode(response?.data?.accessToken)
+                const role = userData.userSession?.user_role?.role_name
+                // console.log(userData?.userSession)
+                // setUser(userData?.userSession);
+                // setToken(response?.data?.accessToken);
+                localStorage.setItem("person", JSON.stringify(response?.data?.accessToken));
+                setMsg(`Welcome`)
+                //navigate('/')
+                if(role == "User") return navigate("/dashboard");
+                if(role == "Superadmin") return navigate("/admindash")
+                if(role !== "Superadmin" || role !== "User") return setAuthErrMsg("you are not a registered user");
             }
-        } catch (err) {
-            console.log(err)
-            if(err?.response?.status == 401){
-                try {
-                    const response = await makeRequest.post("/api/auth/login", { userEmail, userPass })
-                    if(!response) return setAuthErrMsg("")
-                    console.log(response)
-                    if (response.status === 201) {
-                        const userData = jwtDecode(response?.data?.accessToken)
-                        const role = userData.userSession?.user_role?.role_name
-                        // console.log(userData?.userSession)
-                        // setUser(userData?.userSession);
-                        // setToken(response?.data?.accessToken);
-                        localStorage.setItem("person", JSON.stringify(response?.data?.accessToken));
-                        setMsg(`Welcome`)
-                        //navigate('/')
-                        if(role == "User") return navigate("/dashboard");
-                        if(role == "Superadmin") return navigate("/admindash")
-                        if(role !== "Superadmin" || role !== "User") return setAuthErrMsg("you are not a registered user");
-                    }
-                } catch (error) {
-                    console.log(error)
-                    if (error?.response?.status === 400) return setAuthErrMsg(error?.response?.data?.message)
-                }
-            }
+        } catch (error) {
+            console.log(error)
+            if (error?.response?.status === 400) return setAuthErrMsg(error?.response?.data?.message)
+        }
+            
             //setErrMsg(err?.message)
-        }finally {
+        finally {
             // we finally end the loading session
             return setLoading(false);
         }

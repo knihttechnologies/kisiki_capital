@@ -5,7 +5,17 @@ require('dotenv').config()
 // create Model
 const Users = db.Users
 const UserRole = db.UserRole
+const {sessionMiddleware} = require('../middleware/sessionMiddleware')
+
 // main work
+//require Auth
+const RequireAuth = (req, res, next) => {
+  console.log(req.session)
+  const {user} = req.session
+  if(!user){
+      return res.status(401).json({message: 'Unauthorized'})
+  }
+}
 //Login controller
 const Login = async (req, res, next) => {
   const secretKey = {
@@ -46,8 +56,7 @@ const Login = async (req, res, next) => {
   //create the user access token
   //for debugging to check if the access token secret exists
   //console.log(secretKey.accessTokenSecret)
-  req.session.cookie.user = userSession
-  //console.log(req.session)
+  
   if(secretKey.accessTokenSecret === " " || secretKey.accessTokenSecret === null || secretKey.accessTokenSecret === undefined)
     return console.log("accessTokenSecret is empty") && res.status(400).json({ message: "Missing secret!" })
   const accessToken = jwt.sign({userSession}, secretKey.accessTokenSecret,{
@@ -65,31 +74,36 @@ const Login = async (req, res, next) => {
   const updated = await Users.update({refresh_token: refreshToken},{
       where:{user_email: userSession?.user_email}
   })
-  !updated 
-    ? res.status(400).send({msg: 'The refresh token failed to update'})
-    : res.status(201).cookie('refreshToken', refreshToken,{ httpOnly: true, maxAge: 24 * 60 * 60 * 1000}).json({ message: `The login was successful`, accessToken}) 
-//     const jwtToken = jwt.sign(
-//         { id: adminSession.id, email: adminSession.email },
-//         process.env.JWT_SECRET
-//     )
+  if(!updated) return res.status(400).send({msg: 'The refresh token failed to update'})
+  req.session.logged_in = true
+  req.session.user = userSession
+  // await req.session.save((err)=> console.log(err))
+  //next()
+  return res.status(201).cookie('refreshToken', refreshToken,{ httpOnly: true, maxAge: 24 * 60 * 60 * 1000}).json({ message: `The login was successful`, accessToken}) 
+}
+// const MaintainUserSession = async (req, res, next) => {
+//   next()
+//   // req.session.reload((err)=>{
+//   //   console.log(req.session)
+//   //   if(err) return console.log(err)
+//   //   if(req.session.user){
+//   //     res.status(200).json({valid: true, user: req.session.user})
+//   //     return
+//   //   }else{
+//   //     res.status(401).json({valid: false})
+//   //     return 
+//   //   }
+//   // })
+  
+// }
 
-//    res.json({ message: "Welcome Back!", token: jwtToken })
-}
-const MaintainUserSession = async (req, res, next) => {
-  //console.log(req?.session)
-  if(req?.session?.cookie){
-    return res.status(200).json({valid: true, user: req?.session?.cookie?.user})
-  }else{
-    return res.status(400).json({valid: false})
-  }
-}
 const Logout = async (req, res, next) => {
   req?.session?.destroy()
   return res.status(200).json({message: "You have been logged out"})
 }
 
 module.exports = {
+  RequireAuth,
   Login,
-  MaintainUserSession,
   Logout 
 }

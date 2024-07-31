@@ -3,30 +3,27 @@ const morgan = require("morgan")
 const helmet = require("helmet")
 const bodyParser = require('body-parser')
 const path = require('path')
-const session = require('express-session')
-// require("./backend/utils/passport")
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const {users, auth}= require('./backend/routes/channel')
 const {admin} = require('./backend/routes/admin')
 const {payments} = require('./backend/routes/trans')
-//const port = process.env.PORT //|| 4000
 const { notFound, errorHandler, badRequest } = require("./backend/middleware/exceptions")
 const compression = require("compression")
-//stores
-const MemoryStore = require('memorystore')(session)
-const SequelizeStore = require("connect-session-sequelize")(session.Store)
 const config = require("./config")
 const { hostname, port, allowedDomains, remote_client_app } = config;
 require('dotenv').config()
 const { createProxyMiddleware } = require('http-proxy-middleware')
-const db = require('./backend/models')
+//for the session
+const session = require('express-session')
+//stores
+const MemoryStore = require('memorystore')(session)
 //Multer is a Node.js middleware that we use for handling requests from multipart/form-data, 
 //and specifically for handling file uploads.
 //const multer = require('multer')
-
-//start the app
-const app = express();
+const memorystore = new MemoryStore({
+  checkPeriod: 86400000 //prune expired entries every 24 hrs
+})
 // CORS options to allow requests from frontend running on port 5500
 const corsOptions = {
   origin: ['https://pay.google.com/gp/p/js/pay.js', 'http://localhost:60000'],
@@ -43,19 +40,10 @@ const corsOptions = {
   credentials: true,
   maxAge: 600 // 10 minutes
 };
-const extendDefaultFields = (defaults, session) => {
-  return {
-    data: defaults.data,
-    expires:defaults.expires,
-    user_id: session.userid
-  }
-}
-const store = new SequelizeStore({
-  db: db.sequelize,
-  table: "sessions",
-  extendDefaultFields: extendDefaultFields
-})
 
+
+//start the app
+const app = express();
 //middleware
 app.use(helmet());
 // app.use(cors());
@@ -64,50 +52,34 @@ app.use(cors({
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }))
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json());
-app.use(morgan("dev"));
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  store: store,
-  saveUninitialized: true,
+  store: memorystore,
+  saveUninitialized: false,
   resave: false,
   cookie: {
-    user: {},
     httpOnly: true,
     maxAge: parseInt(process.env.SESSION_MAX_AGE)
   }
 }))
-// app.use((req, res, next)=>{
-//   console.log(req.session)
-//   next()
-// })
-//static files
-//app.use(express.static(path.join(__dirname, 'dist')));
-// routes
-//app.use('/Images', express.static('./Images'))
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
 app.use('/api/userprofilepicuploads', express.static(path.join(__dirname, 'Images/Usersimg')))
 app.use('/api/auth', auth)
 app.use('/api/admin', admin)
 app.use('/api/users', users)
 app.use('/api/payments', payments)
-
-//catch all routes to serve the home page of the site
-// app.use('*', function (request, response) {
-//   response.sendFile(path.join(__dirname, 'dist', 'index.html'));
-// });
-
+app.use(morgan("dev"));
 app.use(compression)
 app.use(cookieParser());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
 //our error pages
 app.use(notFound)
 app.use(badRequest)
 app.use(errorHandler)
 app.listen(port, (
-    console.log(` port: ${port}`)
+    console.log(`Am listening on port: ${port}`)
 ));
 
 // This code makes sure that any request that does not matches a static file
@@ -122,4 +94,16 @@ app.listen(port, (
 //     //   res.header('Pragma', 'no-cache');
 //       res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 //   }
+// });
+// app.use((req, res, next)=>{
+//   console.log(req.session)
+//   next()
+// })
+//static files
+//app.use(express.static(path.join(__dirname, 'dist')));
+// routes
+//app.use('/Images', express.static('./Images'))
+//catch all routes to serve the home page of the site
+// app.use('*', function (request, response) {
+//   response.sendFile(path.join(__dirname, 'dist', 'index.html'));
 // });

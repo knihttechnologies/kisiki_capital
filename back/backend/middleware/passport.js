@@ -4,6 +4,19 @@ const ExtractJwt = passportJwt.ExtractJwt;
 const StrategyJwt = passportJwt.Strategy;
 const db = require("../models")
 const Users = db.Users
+passport.serializeUser((user, done)=>{
+  process.nextTick(()=>{
+    return done(null, {
+      id: user.user_id,
+      useremail: user.user_email
+    })
+  })
+})
+passport.deserializeUser((user, done)=>{
+  process.nextTick(()=>{
+    return done(null, user)
+  })
+})
 
 passport.use(
   new StrategyJwt(

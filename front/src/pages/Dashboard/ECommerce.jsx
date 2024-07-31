@@ -14,7 +14,7 @@ import { ordersFetch } from '../../hooks/useFetch';
 const ECommerce = ({}) => {
   const auth = useAuthContext();
   const urls = {
-    ordersurl: "/api/users/allorders"
+    ordersurl: `/api/users/oneorder/${auth?.user?.user_id}`
   }
   const {orders, msg, ordersLoading, errMsg} = ordersFetch(urls.ordersurl)
   setTimeout(() => {

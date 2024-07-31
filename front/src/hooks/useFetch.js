@@ -99,8 +99,8 @@ export const userOrderFetch = (url) => {
         await makeRequest.get(url, {timeout: 10000})
           .then(res => {
             if (isUserMounted) {
-                setUserOrder(res?.data);
-                setOrderErrMsg(null);
+              setUserOrder(res?.data);
+              setOrderErrMsg(null);
             }
           })
           .catch(err => {

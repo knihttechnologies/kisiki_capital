@@ -5,17 +5,23 @@ import axios from 'axios';
 import { useAuthContext } from '../context/AuthContext';
 import { useTableContext } from '../context/TableContext';
 import { jwtDecode } from 'jwt-decode';
+import { userOrderFetch } from '../hooks/useFetch';
 
 const GooglePayButtonComponent = () => {
   const auth = useAuthContext()
   const table = useTableContext()
-  const localUser = localStorage.getItem('person')
-  const localUserOrder = localStorage.getItem('order')
-  if(!localUser || localUser === "") return navigate('/')
-  const userdecoded = jwtDecode(localUser)
-  const orderdecoded = jwtDecode(localUserOrder)
-  const order = orderdecoded?.objectToSend?.userres
-  const user = userdecoded?.objectToSend
+  // const localUser = localStorage.getItem('person')
+  // const localUserOrder = localStorage.getItem('order')
+  // if(!localUser || localUser === "") return navigate('/')
+  // const userdecoded = jwtDecode(localUser)
+  // const orderdecoded = jwtDecode(localUserOrder)
+  // const order = orderdecoded?.objectToSend?.userres
+  // const user = userdecoded?.objectToSend
+  const id = auth?.user?.user_id
+  const urls = {
+    ordersurl: `/api/users/oneorder/${id}`
+  }
+  const {userOrder, userOrderLoading, orderErrMsg} = userOrderFetch(urls?.ordersurl)
   const [totalPrice, setTotalPrice] = useState(0);
   const [useSymbols, setUseSymbols] = useState(true);
   const [useNumbers, setUseNumbers] = useState(true);
@@ -36,9 +42,9 @@ const GooglePayButtonComponent = () => {
   const getUserDetails = () => {
     // Implement your own logic to retrieve the user details
     return {
-      displayName: `${order?.user_firstname} ${order?.user_lastname}`,
-      emailAddress: order?.user_email,
-      phoneNumber: order?.user_phone,
+      displayName: `${auth?.user?.user_firstname} ${auth?.user?.user_lastname}`,
+      emailAddress: auth?.user?.user_email,
+      phoneNumber: auth?.user?.user_phone,
     };
   };
 
@@ -58,15 +64,15 @@ const GooglePayButtonComponent = () => {
   };
 
   const onLoadPaymentData = async (paymentData) => {
-    const totalPrice = user?.order?.discount !== "" ? user?.order?.pkgprice - (user?.order?.pkgprice * (user?.order?.discount / 100)) : user?.order?.pkgprice
+    const totalPrice = auth.user?.order?.discount !== "" ? auth.user?.order?.pkgprice - (auth.user?.order?.pkgprice * (auth.user?.order?.discount / 100)) : auth.user?.order?.pkgprice
     try {
       // Send the payment data to the backend
       const response = await axios.post('/api/google-pay', {
         totalPrice: totalPrice,
         userDetails: {
-          displayName: user?.user?.title,
-          emailAddress: user?.user?.user_email,
-          phoneNumber: user?.user?.user_phone,
+          displayName: auth.user?.user?.title,
+          emailAddress: auth.user?.user?.user_email,
+          phoneNumber: auth.user?.user?.user_phone,
         }
       });
 

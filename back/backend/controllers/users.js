@@ -60,16 +60,6 @@ const createRolesManually = async ( req, res) => {
         console.log(error);
     }
 }
-
-const requireAuth = (req, res, next) => {
-    console.log(req.session)
-    const {user_id} = req.session
-    if(!user_id){
-        return res.status(401).json({message: 'Unauthorized'})
-    }
-    next();
-}
-
 // main work
 // Get the user roles
 const getUserrole = async(req, res) => {
@@ -658,17 +648,19 @@ const getOneOrder = async (req, res) => {
                 "type",
                 "discount",
                 "status",
-                "isVerified_order",
+                "checked_one",
+                "checked_two",
+                "user_id",
             ],
             include: [{
                 model: Users,
-                as: 'user'
+                as: 'users'
             }],
             include: [{
                 model: Payment,
-                as: 'payment'
+                as: 'payments'
             }],
-            where: { order_id: id }
+            where: { user_id: id  }
         })
         Order ? res.status(200).json(Order) : res.status(401).json({message:'Getting order unsuccessful', error: 'order not found'})
     }
@@ -889,7 +881,6 @@ const upload = multer({
 
 //export the controllers
 module.exports = {
-    requireAuth,
     createUsersManually,
     createRolesManually,
     getUserrole,

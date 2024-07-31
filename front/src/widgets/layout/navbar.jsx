@@ -40,18 +40,18 @@ export function Navbar({ brandName, routes, action }) {
             >
               {icon &&
                 React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
+                  className: "w-[18px] h-[18px] opacity-75 mr-1 text-black",
                 })}
               {name}
             </a>
           ) : (
             <Link
               to={path}
-              className="flex items-center gap-1 p-1 font-bold hover:text-warning"
+              className="flex items-center gap-1 p-1 font-bold hover:text-warning text-black"
             >
               {icon &&
                 React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
+                  className: "w-[18px] h-[18px] opacity-75 mr-1 text-black",
                 })}
               {name}
             </Link>
@@ -117,7 +117,7 @@ export function Navbar({ brandName, routes, action }) {
       </div>
       <div className="hidden lg:flex border-2 rounded-lg bg-warning"></div>
       <Collapse
-        className="rounded-xl bg-slate-300 px-3 pt-2 pb-4 text-blue-gray-900 lg:hidden"
+        className="rounded-xl bg-white px-3 pt-2 pb-4 lg:hidden"
         open={openNav}
       >
         <div className="container mx-auto">
@@ -126,9 +126,9 @@ export function Navbar({ brandName, routes, action }) {
             to="/auth"
             className="mb-2 block"
           >
-            {/* <Button variant="text" size="sm" fullWidth>
-              Client Area
-            </Button> */}
+            <button className="text-black text-sm shadow-lg hover:bg-warning p-2 rounded-lg" >
+              Login
+            </button>
           </Link>
           {/* {React.cloneElement(action, {
             className: "w-full block",

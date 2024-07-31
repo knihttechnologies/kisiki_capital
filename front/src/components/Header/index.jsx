@@ -1,19 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import LogoIcon from '../../images/favicon.ico';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import { useAuthContext } from '../../context/AuthContext';
+// import { jwtDecode } from 'jwt-decode';
 
 const Header = ({sidebarOpen, setSidebarOpen}) => {
   const auth = useAuthContext()
   const navigate = useNavigate()
-  //console.log(auth?.user?.user_id)
-  if(auth?.user?.user_id === undefined || auth?.user?.user_id === null){
-    auth?.setAuthErrMsg('Not authorized')
-     navigate('/auth')
-  }
+  const loggedInUser = JSON.parse(localStorage.getItem("person")) || false;
+  if(!loggedInUser) return <Navigate to="/auth" state={{ from: location }} replace />
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
