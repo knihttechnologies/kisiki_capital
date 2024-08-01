@@ -47,11 +47,11 @@ export function Navbar({ brandName, routes, action }) {
           ) : (
             <Link
               to={path}
-              className="flex items-center gap-1 p-1 font-bold hover:text-warning text-black"
+              className="flex items-center gap-1 p-1 font-bold hover:text-warning text-white"
             >
               {icon &&
                 React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1 text-black",
+                  className: "w-[18px] h-[18px] opacity-75 mr-1 text-white",
                 })}
               {name}
             </Link>

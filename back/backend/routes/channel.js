@@ -1,5 +1,5 @@
 const express = require("express")
-const { Login, Logout } = require("../controllers/Auth")
+const { Login, Logout } = require("../controllers/auth")
 const { RefreshToken } = require("../middleware/RefreshToken")
 const upload = require("../controllers/uploadFiles")
 const { 
@@ -44,7 +44,7 @@ auth.get('/refresh', RefreshToken)
 // admin.get('/allorders', getAllOrders)
 // admin.get('/allchats', getAllChats)
 //Users routes
-users.post('/createusersmanually', createUsersManually )
+users.post('/createusersmanually', createUsersManually)
 users.post('/createrolesmanually', createRolesManually)
 users.post('/registerusers', Register)//upload
 users.post('/registerpayments', RegisterPayments)

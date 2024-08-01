@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const {users, auth}= require('./backend/routes/channel')
 const {admin} = require('./backend/routes/admin')
-const {payments} = require('./backend/routes/trans')
 const { notFound, errorHandler, badRequest } = require("./backend/middleware/exceptions")
 const compression = require("compression")
 const config = require("./config")
@@ -68,7 +67,6 @@ app.use('/api/userprofilepicuploads', express.static(path.join(__dirname, 'Image
 app.use('/api/auth', auth)
 app.use('/api/admin', admin)
 app.use('/api/users', users)
-app.use('/api/payments', payments)
 app.use(morgan("dev"));
 app.use(compression)
 app.use(cookieParser());

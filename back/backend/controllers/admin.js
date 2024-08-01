@@ -57,13 +57,13 @@ const createRolesManually = async ( req, res) => {
     }
 }
 
-const requireAdmin = (req, res, next) => {
-    const {user} = req.session
-    if(!user){
-        return res.status(401).json({message: 'Unauthorized'})
-    }
-    next();
-}
+// const requireAdmin = (req, res, next) => {
+//     const {user} = req.session
+//     if(!user){
+//         return res.status(401).json({message: 'Unauthorized'})
+//     }
+//     next();
+// }
 
 // main work
 // Get the user roles
@@ -739,7 +739,7 @@ const upload = multer({
 
 //export the controllers
 module.exports = {
-    requireAdmin,
+    //requireAdmin,
     createAdminManually,
     createRolesManually,
     getUserrole,
